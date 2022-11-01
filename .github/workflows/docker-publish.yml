@@ -1,15 +1,5 @@
-name: Docker
-
-
-on:
-  schedule:
-    - cron: '19 19 * * *'
-  push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
+name: Docker createPython 3.10
+on: [push, pull_request]
 
 env:
   # Use docker.io for Docker Hub if empty

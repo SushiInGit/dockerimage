@@ -9,7 +9,6 @@ on:
   pull_request:
     branches:
       - 'master'
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -53,13 +52,13 @@ jobs:
           elif [[ $GITHUB_REF == refs/pull/* ]]; then
             VERSION=pr-${{ github.event.number }}
           fi
-          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          TAGS="${DOCKER_IMAGE}:pythonimage"
           if [ "${{ github.event_name }}" = "push" ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+            TAGS="pythonimage,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           fi
-          echo ::set-output name=version::${VERSION}
-          echo ::set-output name=tags::${TAGS}
-          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo "name=version::${VERSION}" >> $GITHUB_OUTPUT
+          echo "name=tags::${TAGS}" >> $GITHUB_OUTPUT
+          echo "name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
       - 
         name: Push to GitHub Packages
         uses: docker/build-push-action@v3

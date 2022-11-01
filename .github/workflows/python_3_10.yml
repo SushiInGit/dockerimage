@@ -32,9 +32,9 @@ jobs:
         
       - name: Convert lowercase
         run: |
-          USERNAME=$(echo 'console.log("${{ env.USERNAME }}".toLowerCase())' | node -)
-          IMAGE_NAME=$(echo 'console.log("${{ env.IMAGE_NAME }}".toLowerCase())' | node -)
-          TAG=$(echo 'console.log("${{ env.TAG }}".toLowerCase())' | node -)
+          echo "USERNAME=${USERNAME,,}" >>${GITHUB_ENV}
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
+          echo "TAG=${TAG,,}" >>${GITHUB_ENV}
           
       - name: Build and push
         uses: docker/build-push-action@v3

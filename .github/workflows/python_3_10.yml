@@ -1,4 +1,4 @@
-name: Docker createPython 3.10
+name: Python 3.10
 on: [push, pull_request]
 
 env:
@@ -6,7 +6,7 @@ env:
   USERNAME: ${{ github.actor }}
   PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_NAME: ${{ github.repository }}
-  TAG: python_3_10
+  TAG: python310
 
 
 jobs:

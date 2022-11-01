@@ -2,12 +2,11 @@ name: Docker createPython 3.10
 on: [push, pull_request]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  username: ${{ github.actor }}
-  password: ${{ secrets.GITHUB_TOKEN }}
-  # github.repository as <account>/<repo>
+  USERNAME: ${{ github.actor }}
+  PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_NAME: ${{ github.repository }}
+  TAG: python_3_10
 
 
 jobs:
@@ -25,8 +24,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ env.username }}
-          password: ${{ env.password }}
+          username: ${{ env.USERNAME }}
+          password: ${{ env.PASSWORD }}
           
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -37,4 +36,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.username }}/{{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}

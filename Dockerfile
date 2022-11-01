@@ -1,4 +1,4 @@
-#temp stage
+## Create Builder
 FROM python:3.10-slim as builder
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
@@ -14,7 +14,7 @@ RUN python -m venv /usr/app/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 
-# final stage
+## Create Image
 FROM python:3.10-slim
 USER root
 RUN groupadd -g 999 python && useradd -u 999 -g python -G sudo -m -s /bin/bash python 

@@ -24,11 +24,6 @@ WORKDIR /usr/app
 COPY --chown=python:python --from=builder /usr/app/venv ./venv
 COPY --chown=python:python . .
 RUN python -m pip install --upgrade pip
-
-#ARG DISCORD_TOKEN
-ENV TOKEN="$DISCORD_TOKEN"
-#ARG DISCORD_GUILD
-ENV GUILD="$DISCORD_GUILD"
 USER 999
 ENV PATH="/usr/app/venv/bin:$PATH"
 CMD [ "python3"]

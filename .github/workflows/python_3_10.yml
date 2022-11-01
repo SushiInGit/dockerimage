@@ -6,7 +6,7 @@ env:
   USERNAME: ${{ github.actor }}
   PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_NAME: ${{ github.repository }}
-  TAG: python310
+  TAG: "3.10"
 
 
 jobs:

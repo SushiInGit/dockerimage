@@ -51,8 +51,12 @@ jobs:
             VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
           elif [[ $GITHUB_REF == refs/pull/* ]]; then
             VERSION=pr-${{ github.event.number }}
+          TAGS="${DOCKER_IMAGE}:pythonimage"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAGS="pythonimage,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           fi
           echo "name=version::${VERSION}" >> $GITHUB_OUTPUT
+          echo "name=tags::${TAGS}" >> $GITHUB_OUTPUT
           echo "name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
       - 
         name: Push to GitHub Packages
@@ -60,4 +64,4 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sushiingit/dockerimage:python
+          tags: ${{ steps.prep.outputs.tags }}

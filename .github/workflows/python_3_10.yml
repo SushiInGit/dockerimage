@@ -15,8 +15,6 @@ env:
   USERNAME: ${{ github.actor }}
   PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   IMAGE_NAME: ${{ github.repository }}
-  TAG: "3.10"
-
 
 jobs:
   build:
@@ -35,7 +33,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: name/app 
+          images: |
+            name/app
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - 
         name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
@@ -52,8 +56,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
-          #push: true
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -30,13 +30,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
         
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={${{ env.TAG }}}   
+            
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
-          USERNAME: ${{ env.USERNAME }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          TAG: ${{ env.TAG }}
-          tags: ${{ steps.USERNAME.outputs.lowercase }}/${{ steps.IMAGE_NAME.outputs.lowercase }}:${{ steps.TAG.outputs.lowercase }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
